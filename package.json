@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "gradlew": "^0.0.1-security",
     "react": "18.2.0",
     "react-native": "0.74.5",
     "react-native-camera": "^4.2.1",
