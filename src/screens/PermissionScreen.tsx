@@ -1,27 +1,28 @@
-import { Pressable, StyleSheet, Text } from "react-native"
+import {
+    Pressable,
+    StyleSheet,
+    Text,
+    ImageBackground
+} from "react-native";
 
-interface Props {
+type PermissionScreenProps<P = unknown> = P & {
     onPress: () => void;
 }
 
-type PermissionScreenProps<P = unknown> = P &  {
-    color?: string | undefined;
-    color_pressed?: string | undefined;
-    children?: React.ReactNode | undefined;
-}
-
-export default function PermissionScreen({onPress, color, color_pressed, children}: PermissionScreenProps<Props>) {
+export default function PermissionScreen({ onPress }: PermissionScreenProps) {
     return (
-        <Pressable
-        onPress={onPress}
-        style={({pressed}) => [
-            {backgroundColor: pressed ? color_pressed : color},
-            styles.container
-        ]}>
-            <Text style={styles.text}>
-                TAP THE SCREEN{'\n'} I NEED PERMISSION FOR YOUR CAMERA
-            </Text>
-        </Pressable>
+        <ImageBackground source={require("../assets/begging_stockImage.jpg")}>
+            <Pressable
+                onPress={onPress}
+                style={({ pressed }) => [
+                    { backgroundColor: pressed ? 'black' : 'grey' },
+                    styles.container
+                ]}>
+                <Text style={styles.text}>
+                    TAP THE SCREEN{'\n'} I NEED PERMISSION FOR YOUR CAMERA
+                </Text>
+            </Pressable>
+        </ImageBackground>
     )
 }
 
@@ -29,11 +30,21 @@ const styles = StyleSheet.create({
     container: {
         height: "100%",
         width: "100%",
-        justifyContent: 'center'
+        justifyContent: 'center',
+        opacity: 0.8
     },
     text: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 30
+        backgroundColor: 'black',
+        fontSize: 30,
+        borderRadius: 20,
+        borderWidth: 1
+    },
+    image: {
+        flex: 1,
+        height: "100%",
+        width: "100%",
+        justifyContent: 'center'
     }
 });
