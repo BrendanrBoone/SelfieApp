@@ -13,10 +13,7 @@ export default function CameraScreen() {
 
     if (device == null) return <NoCameraErrorView />
     if (!hasPermission) {
-        return <PermissionScreen
-            onPress={requestPermission}
-            color="grey"
-            color_pressed="black" />
+        return <PermissionScreen onPress={requestPermission}/>
     } else {
         return (
             <Camera
