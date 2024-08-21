@@ -1,25 +1,24 @@
-import { runOnJS } from 'react-native-reanimated';
+
+import { useEffect, useState, useRef } from "react";
 import {
     Pressable,
     SafeAreaView,
     StyleSheet,
     Text,
     Dimensions,
-    Image
+    Image,
+    View
 } from "react-native"
-
 import {
     Camera,
     useCameraPermission,
     useCameraDevice,
     PhotoFile
 } from "react-native-vision-camera";
-
 import NoCameraErrorView from "./NoCameraErrorView";
 import PermissionScreen from "./PermissionScreen";
+import { VideoPlayer } from "../components/ui/VideoPlayer";
 
-//import { scanFaces, Face } from "vision-camera-face-detector";
-import { useEffect, useState, useRef } from "react";
 
 const { height, width } = Dimensions.get("window");
 const captureButtonDimensions = 100;
@@ -29,13 +28,8 @@ export default function CameraScreen() {
     const device = useCameraDevice('front');
     const camera = useRef<Camera>(null);
     const [image, setImage] = useState<PhotoFile | null>(null);
-
-    //const [faces, setfaces] = useState<Face[]>();
-    /* 
-        useEffect(() => {
-            console.log(faces);
-        }, [faces]);
-     */
+    const [buttonToggle, setButtonToggle] = useState(true);
+    const [videoSource, setVideoSource] = useState<NodeRequire | null>(null);
 
     const takePhoto = async () => {
         if (camera.current) {
@@ -47,6 +41,21 @@ export default function CameraScreen() {
             }
 
         }
+    }
+
+    const clearAbsoluteButtons = () => {
+        setButtonToggle(false);
+        setImage(null);
+    }
+
+    const returnAbsoluteButtons = () => {
+        setButtonToggle(true);
+        setVideoSource(null);
+    }
+
+    const challenge_one = () => {
+        clearAbsoluteButtons();
+        setVideoSource(require("../assets/baseballJumpscare.mp4"));
     }
 
     if (device == null) return <NoCameraErrorView />
@@ -62,16 +71,43 @@ export default function CameraScreen() {
                     isActive={true}
                     photo={true}
                 />
-                <Pressable
-                    style={({ pressed }) => [
-                        { borderColor: pressed ? 'grey' : 'white' },
-                        styles.buttonContainer
-                    ]}
-                    onPress={takePhoto}>
-                    <Text>
-                        Take a Photo
-                    </Text>
-                </Pressable>
+                {buttonToggle && (
+                    <View style={styles.buttonsViewContainer}>
+                        <Pressable
+                            style={({ pressed }) => [
+                                { borderColor: pressed ? 'navy' : 'blue' },
+                                styles.leftButtonContainer
+                            ]}
+                            onPress={challenge_one}>
+                            <Text>
+                                BASEBALL
+                            </Text>
+                        </Pressable>
+                        <Pressable
+                            style={({ pressed }) => [
+                                { borderColor: pressed ? 'grey' : 'white' },
+                                styles.buttonContainer,
+                                { alignSelf: 'center' }
+                            ]}
+                            onPress={takePhoto}>
+                            <Text>
+                                Take a Photo
+                            </Text>
+                        </Pressable>
+                        <Pressable
+                            style={({ pressed }) => [
+                                { borderColor: pressed ? 'maroon' : 'red' },
+                                styles.rightButtonContainer,
+                                { alignSelf: 'flex-end' }
+                            ]}
+                            onPress={takePhoto}>
+                            <Text>
+                                Take a Photo
+                            </Text>
+                        </Pressable>
+                    </View>
+                )}
+
                 {image && (
                     <Pressable
                         onPress={() => setImage(null)}
@@ -80,6 +116,14 @@ export default function CameraScreen() {
                             source={{ uri: `file://${image.path}` }}
                             style={{ flex: 1, borderRadius: 10 }} />
                     </Pressable>
+                )}
+                {videoSource && (
+                    <View style={{position: "absolute", height: "100%", width: "100%"}}>
+                        <VideoPlayer
+                            onEnd={returnAbsoluteButtons}
+                            source_location={videoSource}
+                        />
+                    </View>
                 )}
             </SafeAreaView>
         )
@@ -92,13 +136,40 @@ const styles = StyleSheet.create({
         height: captureButtonDimensions,
         width: captureButtonDimensions,
         justifyContent: 'center',
-        alignSelf: 'center',
         alignItems: 'center',
         opacity: 0.8,
         backgroundColor: 'transparent',
-        marginTop: height - (captureButtonDimensions + captureButtonDimensions / 2),
         borderWidth: 7,
         borderRadius: 60
+    },
+    leftButtonContainer: {
+        position: "absolute",
+        height: captureButtonDimensions * 0.9,
+        width: captureButtonDimensions * 0.9,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.8,
+        backgroundColor: 'transparent',
+        borderWidth: 7,
+        borderRadius: 30
+    },
+    rightButtonContainer: {
+        position: "absolute",
+        height: captureButtonDimensions * 0.9,
+        width: captureButtonDimensions * 0.9,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.8,
+        backgroundColor: 'transparent',
+        borderWidth: 7,
+        borderRadius: 30
+    },
+    buttonsViewContainer: {
+        position: "absolute",
+        height: captureButtonDimensions,
+        width: "100%",
+        marginTop: height - (captureButtonDimensions + captureButtonDimensions / 2),
+        backgroundColor: 'transparent'
     },
     text: {
         textAlign: 'center',
