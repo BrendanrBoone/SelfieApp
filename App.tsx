@@ -12,8 +12,13 @@ import {
   StyleSheet,
   useColorScheme
 } from 'react-native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme
+} from '@react-navigation/native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import CameraScreen from './src/screens/CameraScreen';
+import StackNavigationScreen from './src/components/nav_stacks/StackNavigationScreen';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -22,14 +27,16 @@ function App(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const scheme = useColorScheme();
+
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <NavigationContainer theme={scheme === "dark" ? DarkTheme : DefaultTheme}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <CameraScreen />
-    </SafeAreaView>
+      <StackNavigationScreen />
+    </NavigationContainer>
   );
 }
 

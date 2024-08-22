@@ -18,12 +18,13 @@ import {
 import NoCameraErrorView from "./NoCameraErrorView";
 import PermissionScreen from "./PermissionScreen";
 import { VideoPlayer } from "../components/ui/VideoPlayer";
+import route_names, { ICameraScreenProps } from "../routes";
 
 
 const { height, width } = Dimensions.get("window");
 const captureButtonDimensions = 100;
 
-export default function CameraScreen() {
+export default function CameraScreen(props: ICameraScreenProps) {
     const { hasPermission, requestPermission } = useCameraPermission();
     const device = useCameraDevice('front');
     const camera = useRef<Camera>(null);
@@ -89,6 +90,26 @@ export default function CameraScreen() {
         setVideoSource(require("../assets/scaryJumpscare.mp4"));
     }
 
+    const handleBlueButton = () => {
+        challenge_one();
+    }
+
+    const handleWhiteButton = () => {
+        takePhoto();
+    }
+
+    const handleRedButton = () => {
+        challenge_two();
+    }
+
+    const handleFrameButton = () => {
+        if (image) {
+            const image_to_send: PhotoFile = image;
+            setImage(null);
+            props.navigation.navigate(route_names.IMAGE_EDITOR_SCREEN, {image_photo_file: image_to_send});
+        }
+    }
+
     if (device == null) return <NoCameraErrorView />
     if (!hasPermission) {
         return <PermissionScreen onPress={requestPermission} />
@@ -101,20 +122,6 @@ export default function CameraScreen() {
                             onEnd={returnAbsoluteButtons}
                             source_location={videoSource}
                         />
-                        <Pressable style={{
-                            position: 'absolute',
-                            height: 100,
-                            width: 100,
-                            marginTop: height / 2 - 50,
-                            marginLeft: width / 2 - 50,
-                            backgroundColor: 'grey',
-                            opacity: 0.8
-                        }}
-                            onPress={handleTimePress}>
-                            <Text style={{ fontSize: 50 }}>
-                                time
-                            </Text>
-                        </Pressable>
                     </View>
                 )}
 
@@ -133,7 +140,7 @@ export default function CameraScreen() {
                                 { borderColor: pressed ? 'navy' : 'blue' },
                                 styles.leftButtonContainer
                             ]}
-                            onPress={challenge_one}>
+                            onPress={handleBlueButton}>
                             <Text>
                                 BASEBALL
                             </Text>
@@ -144,7 +151,7 @@ export default function CameraScreen() {
                                 styles.buttonContainer,
                                 { alignSelf: 'center' }
                             ]}
-                            onPress={takePhoto}>
+                            onPress={handleWhiteButton}>
                             <Text>
                                 Take a Photo
                             </Text>
@@ -155,7 +162,7 @@ export default function CameraScreen() {
                                 styles.rightButtonContainer,
                                 { alignSelf: 'flex-end' }
                             ]}
-                            onPress={challenge_two}>
+                            onPress={handleRedButton}>
                             <Text>
                                 CHALLENGE
                             </Text>
@@ -165,7 +172,7 @@ export default function CameraScreen() {
 
                 {image && (
                     <Pressable
-                        onPress={() => setImage(null)}
+                        onPress={handleFrameButton}
                         style={styles.image}>
                         <Image
                             source={{ uri: `file://${image.path}` }}
