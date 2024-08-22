@@ -8,7 +8,9 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "clean": "rm -rf node_modules/ && rm -rf package-lock.json"
+    "clean": "rm -rf node_modules/ && rm -rf package-lock.json",
+    "release": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
+    "apk": "cd android && gradlew assembleRelease"
   },
   "dependencies": {
     "@react-navigation/stack": "^6.4.1",

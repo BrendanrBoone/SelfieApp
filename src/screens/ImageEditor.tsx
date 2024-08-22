@@ -16,7 +16,7 @@ import Feather from "react-native-vector-icons/Feather";
 
 
 const { height, width } = Dimensions.get("window");
-const exitButtonDimensions = 100;
+const exitButtonDimensions = 50;
 
 export default function ImageEditorScreen(props: IImageEditorScreenProps) {
 
@@ -33,11 +33,8 @@ export default function ImageEditorScreen(props: IImageEditorScreenProps) {
                 style={{ height: height, width: width }} />
             <Pressable
                 onPress={handleXButton}
-                style={({ pressed }) => [
-                    styles.buttonContainer,
-                    { backgroundColor: pressed ? 'grey' : 'white' }
-                ]}>
-                <Feather name="x" size={30} color="black"/>
+                style={styles.buttonContainer}>
+                <Feather name="x" size={30} color="white"/>
             </Pressable>
         </SafeAreaView>
     )
@@ -48,12 +45,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 10,
         top: 10,
-        opacity: 0.3,
+        opacity: 0.9,
         height: exitButtonDimensions,
         width: exitButtonDimensions,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 60
+        borderRadius: 60,
+        backgroundColor: 'transparent'
     },
     image: {
         position: "absolute",

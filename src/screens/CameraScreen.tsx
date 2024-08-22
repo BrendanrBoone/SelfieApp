@@ -82,12 +82,16 @@ export default function CameraScreen(props: ICameraScreenProps) {
         setTimeout(() => {
             console.log("photo taken");
             takePhoto();
-        }, 5000);
+        }, 4800);
     }
 
     const challenge_two = () => {
         clearAbsoluteButtons();
         setVideoSource(require("../assets/scaryJumpscare.mp4"));
+        setTimeout(() => {
+            console.log("photo taken");
+            takePhoto();
+        }, 22000);
     }
 
     const handleBlueButton = () => {
@@ -106,7 +110,7 @@ export default function CameraScreen(props: ICameraScreenProps) {
         if (image) {
             const image_to_send: PhotoFile = image;
             setImage(null);
-            props.navigation.navigate(route_names.IMAGE_EDITOR_SCREEN, {image_photo_file: image_to_send});
+            props.navigation.navigate(route_names.IMAGE_EDITOR_SCREEN, { image_photo_file: image_to_send });
         }
     }
 
@@ -116,6 +120,14 @@ export default function CameraScreen(props: ICameraScreenProps) {
     } else {
         return (
             <SafeAreaView style={{ height: height, width: width }}>
+                <Camera
+                    ref={camera}
+                    style={{ height: "100%", width: "100%" }}
+                    device={device}
+                    isActive={true}
+                    photo={true}
+                />
+
                 {videoSource && (
                     <View style={styles.videoContainer}>
                         <VideoPlayer
@@ -124,14 +136,6 @@ export default function CameraScreen(props: ICameraScreenProps) {
                         />
                     </View>
                 )}
-
-                <Camera
-                    ref={camera}
-                    style={{ height: "100%", width: "100%" }}
-                    device={device}
-                    isActive={true}
-                    photo={true}
-                />
 
                 {buttonToggle && (
                     <View style={styles.buttonsViewContainer}>
@@ -164,7 +168,7 @@ export default function CameraScreen(props: ICameraScreenProps) {
                             ]}
                             onPress={handleRedButton}>
                             <Text>
-                                CHALLENGE
+                                SCARY VIDEO
                             </Text>
                         </Pressable>
                     </View>
@@ -189,7 +193,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         height: height,
         width: width,
-        backgroundColor: 'black'
+        backgroundColor: 'black',
+        flex: 1
     },
     buttonContainer: {
         position: "absolute",
