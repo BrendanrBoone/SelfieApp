@@ -30,6 +30,23 @@ export default function CameraScreen() {
     const [image, setImage] = useState<PhotoFile | null>(null);
     const [buttonToggle, setButtonToggle] = useState(true);
     const [videoSource, setVideoSource] = useState<NodeRequire | null>(null);
+    const [startTimer, setStartTimer] = useState(false);
+    const [time, setTime] = useState(0);
+
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout;
+        if (startTimer) {
+            intervalId = setInterval(() => {
+                setTime(time => time + 0.2);
+            }, 200);
+        }
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+                setTime(0);
+            }
+        };
+    }, [startTimer]);
 
     const takePhoto = async () => {
         if (camera.current) {
@@ -39,23 +56,37 @@ export default function CameraScreen() {
             } catch (error) {
                 console.error(`Error: ${error}`);
             }
-
         }
+    }
+
+    const handleTimePress = () => {
+        console.log(`Time: ${time} seconds`);
     }
 
     const clearAbsoluteButtons = () => {
         setButtonToggle(false);
         setImage(null);
+        setStartTimer(true);
     }
 
     const returnAbsoluteButtons = () => {
         setButtonToggle(true);
         setVideoSource(null);
+        setStartTimer(false);
     }
 
     const challenge_one = () => {
         clearAbsoluteButtons();
         setVideoSource(require("../assets/baseballJumpscare.mp4"));
+        setTimeout(() => {
+            console.log("photo taken");
+            takePhoto();
+        }, 5000);
+    }
+
+    const challenge_two = () => {
+        clearAbsoluteButtons();
+        setVideoSource(require("../assets/scaryJumpscare.mp4"));
     }
 
     if (device == null) return <NoCameraErrorView />
@@ -63,7 +94,30 @@ export default function CameraScreen() {
         return <PermissionScreen onPress={requestPermission} />
     } else {
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{ height: height, width: width }}>
+                {videoSource && (
+                    <View style={styles.videoContainer}>
+                        <VideoPlayer
+                            onEnd={returnAbsoluteButtons}
+                            source_location={videoSource}
+                        />
+                        <Pressable style={{
+                            position: 'absolute',
+                            height: 100,
+                            width: 100,
+                            marginTop: height / 2 - 50,
+                            marginLeft: width / 2 - 50,
+                            backgroundColor: 'grey',
+                            opacity: 0.8
+                        }}
+                            onPress={handleTimePress}>
+                            <Text style={{ fontSize: 50 }}>
+                                time
+                            </Text>
+                        </Pressable>
+                    </View>
+                )}
+
                 <Camera
                     ref={camera}
                     style={{ height: "100%", width: "100%" }}
@@ -71,6 +125,7 @@ export default function CameraScreen() {
                     isActive={true}
                     photo={true}
                 />
+
                 {buttonToggle && (
                     <View style={styles.buttonsViewContainer}>
                         <Pressable
@@ -100,9 +155,9 @@ export default function CameraScreen() {
                                 styles.rightButtonContainer,
                                 { alignSelf: 'flex-end' }
                             ]}
-                            onPress={takePhoto}>
+                            onPress={challenge_two}>
                             <Text>
-                                Take a Photo
+                                CHALLENGE
                             </Text>
                         </Pressable>
                     </View>
@@ -117,20 +172,18 @@ export default function CameraScreen() {
                             style={{ flex: 1, borderRadius: 10 }} />
                     </Pressable>
                 )}
-                {videoSource && (
-                    <View style={{position: "absolute", height: "100%", width: "100%"}}>
-                        <VideoPlayer
-                            onEnd={returnAbsoluteButtons}
-                            source_location={videoSource}
-                        />
-                    </View>
-                )}
             </SafeAreaView>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    videoContainer: {
+        position: "absolute",
+        height: height,
+        width: width,
+        backgroundColor: 'black'
+    },
     buttonContainer: {
         position: "absolute",
         height: captureButtonDimensions,
