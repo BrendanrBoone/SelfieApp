@@ -1,4 +1,8 @@
-
+/**
+ * CameraScreen.tsx
+ * 
+ * Main screen of app
+ */
 import { useEffect, useState, useRef } from "react";
 import {
     Pressable,
