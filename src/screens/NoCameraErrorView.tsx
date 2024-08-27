@@ -1,3 +1,8 @@
+/**
+ * NoCameraErrorView.tsx
+ * 
+ * Untested Screen in the case a camera was not found
+ */
 import { SafeAreaView, StyleSheet } from "react-native"
 
 export default function NoCameraErrorView() {
