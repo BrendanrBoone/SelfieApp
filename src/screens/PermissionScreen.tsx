@@ -1,3 +1,8 @@
+/**
+ * PermissionScreen.tsx
+ * 
+ * Screen to ask permission for camera
+ */
 import {
     Pressable,
     StyleSheet,
