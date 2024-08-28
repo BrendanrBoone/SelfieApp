@@ -64,6 +64,7 @@ export default function CameraScreen(props: ICameraScreenProps) {
         }
     }
 
+    //print time to help with troubleshooting
     const handleTimePress = () => {
         console.log(`Time: ${time} seconds`);
     }
