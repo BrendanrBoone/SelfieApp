@@ -69,18 +69,21 @@ export default function CameraScreen(props: ICameraScreenProps) {
         console.log(`Time: ${time} seconds`);
     }
 
+    //Turns off visibility of standard objects on screen
     const clearAbsoluteButtons = () => {
         setButtonToggle(false);
         setImage(null);
         setStartTimer(true);
     }
 
+    //Turns on visibility of standard objects on screen
     const returnAbsoluteButtons = () => {
         setButtonToggle(true);
         setVideoSource(null);
         setStartTimer(false);
     }
 
+    //Plays Baseball Jumpscare video and takes a photo of reaction
     const challenge_one = () => {
         clearAbsoluteButtons();
         setVideoSource(require("../assets/baseballJumpscare.mp4"));
@@ -90,6 +93,7 @@ export default function CameraScreen(props: ICameraScreenProps) {
         }, 4800);
     }
 
+    //Plays Scary Jumpscare video and takes a photo of reaction
     const challenge_two = () => {
         clearAbsoluteButtons();
         setVideoSource(require("../assets/scaryJumpscare.mp4"));
