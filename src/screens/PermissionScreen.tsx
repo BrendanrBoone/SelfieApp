@@ -14,6 +14,11 @@ type PermissionScreenProps<P = unknown> = P & {
     onPress: () => void;
 }
 
+/**
+ * PermissionScreen
+ * 
+ * Asks user for permission to use front camera
+ */
 export default function PermissionScreen({ onPress }: PermissionScreenProps) {
     return (
         <ImageBackground source={require("../assets/begging_stockImage.jpg")}>
