@@ -5,5 +5,5 @@ UPDATE: bare minimum done. Face recogition and filters not implemented yet. Righ
 
 ## LINKS
 Change App Name [StackOverflow](https://stackoverflow.com/questions/34794679/change-app-name-in-react-native)
-react-native-vector-icons for [android](// https://github.com/oblador/react-native-vector-icons/blob/master/README.md#android-setup)
+react-native-vector-icons for [android](https://github.com/oblador/react-native-vector-icons/blob/master/README.md#android-setup)
 Current [Build](https://drive.google.com/drive/folders/1HOV4TXsEq9Ghcs-i6hrB-IGjZOAKqpNf?usp=sharing)
